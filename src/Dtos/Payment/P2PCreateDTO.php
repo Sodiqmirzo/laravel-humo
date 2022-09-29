@@ -10,5 +10,4 @@ namespace Uzbek\Humo\Dtos\Payment;
 
 class P2PCreateDTO
 {
-
 }

@@ -11,7 +11,6 @@ namespace Uzbek\Humo\Response;
 
 use Uzbek\Humo\Dtos\Card\IiacsCardDto;
 
-
 class IiacsCard extends BaseResponse
 {
     public IiacsCardDto $card;

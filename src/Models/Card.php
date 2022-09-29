@@ -29,13 +29,21 @@ use Uzbek\Humo\Response\TransactionScoring;
 class Humo extends BaseModel
 {
     public const STATUS_APPROVED = 000;
+
     public const STATUS_DECLINE_RESTRICTED_CARD = 104;
+
     public const STATUS_CARD_NOT_EFFECTIVE = 125;
+
     public const STATUS_PICK_UP_RESTRICTED_CARD = 204;
+
     public const STATUS_PICK_UP_SPECIAL_CONDITIONS = 207;
+
     public const STATUS_PICK_UP_LOST_CARD = 208;
+
     public const STATUS_PICK_UP_STOLEN_CARD = 209;
+
     public const STATUS_DECLINE_CARD_IS_NOT_ACTIVE_AT_BANK_WILL = 280;
+
     public const STATUS_DECLINE_CARD_IS_NOT_ACTIVE_AT_CARDHOLDER_WILL = 281;
 
     public function customerActivate(string $bankId, string $language = null, ChargeDto $chargeDto, CardDto $cardDto, PhoneDto $phoneDto, EmailDto $emailDto): CustomerActivate

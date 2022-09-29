@@ -8,9 +8,9 @@ namespace Uzbek\Humo\Response;
  * Date: 8/17/2022
  * Time: 4:29 PM
  */
-
 class CustomerChangePhoneNumber extends BaseResponse
 {
     public string $state;
+
     public string $message;
 }

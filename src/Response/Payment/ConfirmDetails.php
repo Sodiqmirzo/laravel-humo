@@ -40,5 +40,4 @@ namespace Uzbek\Humo\Response\Payment;
  */
 class ConfirmDetails extends BaseResponse
 {
-
 }

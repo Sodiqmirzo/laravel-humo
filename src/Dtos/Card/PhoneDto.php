@@ -14,5 +14,6 @@ use Uzbek\Humo\Response\BaseResponse;
 class PhoneDto extends BaseResponse
 {
     public string $msisdn;
+
     public ?string $deliveryChannel;
 }

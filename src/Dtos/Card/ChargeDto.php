@@ -14,5 +14,6 @@ use Uzbek\Humo\Response\BaseResponse;
 class ChargeDto extends BaseResponse
 {
     public string $agreementCharge;
+
     public string $chargeAccount;
 }

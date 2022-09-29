@@ -10,5 +10,4 @@ namespace Uzbek\Humo\Response\Payment;
 
 class Cancel
 {
-
 }

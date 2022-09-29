@@ -1,4 +1,5 @@
 <?php
+
 namespace Uzbek\Humo\Dtos;
 
 /**
@@ -13,6 +14,8 @@ use Uzbek\Humo\Response\BaseResponse;
 class CustomerCardByPassportDto extends BaseResponse
 {
     public string $name;
+
     public string $card;
+
     public string $expiry;
 }

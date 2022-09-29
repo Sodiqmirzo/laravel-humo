@@ -10,5 +10,4 @@ namespace Uzbek\Humo\Models;
 
 class BaseModel
 {
-
 }
