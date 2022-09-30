@@ -8,7 +8,11 @@
 
 namespace Uzbek\Humo\Models;
 
+use Uzbek\Humo\Trait\Base;
+use Uzbek\Humo\Trait\Utils;
+
 class BaseModel
 {
-
+    use Base;
+    use Utils;
 }

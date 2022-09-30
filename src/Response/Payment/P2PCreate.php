@@ -8,7 +8,10 @@
 
 namespace Uzbek\Humo\Response\Payment;
 
-class P2PCreate
+class P2PCreate extends BaseResponse
 {
-
+    public function __construct(array $params)
+    {
+        parent::__construct($params['RequestResponse'] ?? []);
+    }
 }

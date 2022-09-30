@@ -1,7 +1,12 @@
 <?php
 
-namespace Uzbek\Humo\Response;
+namespace Uzbek\Humo\Response\Card;
 
+
+use Uzbek\Humo\Dtos\Card\CardDto;
+use Uzbek\Humo\Dtos\Card\ChargeDto;
+use Uzbek\Humo\Dtos\Card\EmailDto;
+use Uzbek\Humo\Dtos\Card\PhoneDto;
 
 /**
  * Created by Sodikmirzo.

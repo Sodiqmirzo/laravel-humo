@@ -10,5 +10,10 @@ namespace Uzbek\Humo\Response\Payment;
 
 class PaymentReturn
 {
+    public bool $isOk;
 
+    public function __construct(array $attributes)
+    {
+        $this->isOk = isset($attributes['ReturnPaymentResponse']);
+    }
 }

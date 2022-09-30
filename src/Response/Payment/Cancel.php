@@ -10,5 +10,10 @@ namespace Uzbek\Humo\Response\Payment;
 
 class Cancel
 {
+    public bool $isOk = false;
 
+    public function __construct(array $params)
+    {
+        $this->isOk = isset($params['CancelRequestResponse']);
+    }
 }

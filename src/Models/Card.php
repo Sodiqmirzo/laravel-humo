@@ -8,25 +8,25 @@
 
 namespace Uzbek\Humo\Models;
 
-use Uzbek\Humo\Dtos\CardDto;
-use Uzbek\Humo\Dtos\ChargeDto;
-use Uzbek\Humo\Dtos\EmailDto;
-use Uzbek\Humo\Dtos\PhoneDto;
-use Uzbek\Humo\Dtos\RateDto;
-use Uzbek\Humo\Response\Customer;
-use Uzbek\Humo\Response\CustomerActivate;
-use Uzbek\Humo\Response\CustomerCardByPassport;
-use Uzbek\Humo\Response\CustomerChangeCardholdersMessageLang;
-use Uzbek\Humo\Response\CustomerChangePhoneNumber;
-use Uzbek\Humo\Response\CustomerDeactivate;
-use Uzbek\Humo\Response\CustomerEditCard;
-use Uzbek\Humo\Response\CustomerList;
-use Uzbek\Humo\Response\CustomerRemoveCard;
-use Uzbek\Humo\Response\ExchangeRate;
-use Uzbek\Humo\Response\IiacsCard;
-use Uzbek\Humo\Response\TransactionScoring;
+use Uzbek\Humo\Dtos\Card\CardDto;
+use Uzbek\Humo\Dtos\Card\ChargeDto;
+use Uzbek\Humo\Dtos\Card\EmailDto;
+use Uzbek\Humo\Dtos\Card\PhoneDto;
+use Uzbek\Humo\Dtos\Card\RateDto;
+use Uzbek\Humo\Response\Card\Customer;
+use Uzbek\Humo\Response\Card\CustomerActivate;
+use Uzbek\Humo\Response\Card\CustomerCardByPassport;
+use Uzbek\Humo\Response\Card\CustomerChangeCardholdersMessageLang;
+use Uzbek\Humo\Response\Card\CustomerChangePhoneNumber;
+use Uzbek\Humo\Response\Card\CustomerDeactivate;
+use Uzbek\Humo\Response\Card\CustomerEditCard;
+use Uzbek\Humo\Response\Card\CustomerList;
+use Uzbek\Humo\Response\Card\CustomerRemoveCard;
+use Uzbek\Humo\Response\Card\ExchangeRate;
+use Uzbek\Humo\Response\Card\IiacsCard;
+use Uzbek\Humo\Response\Card\TransactionScoring;
 
-class Humo extends BaseModel
+class Card extends BaseModel
 {
     public const STATUS_APPROVED = 000;
     public const STATUS_DECLINE_RESTRICTED_CARD = 104;

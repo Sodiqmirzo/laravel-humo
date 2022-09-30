@@ -8,7 +8,21 @@
 
 namespace Uzbek\Humo\Response\Payment;
 
-class RecoCreate
+/**
+ * Class Server
+ *
+ * @property-read int|null paymentID
+ * @property-read array|null details
+ */
+class RecoCreate extends BaseResponse
 {
+    public function __construct(array $params)
+    {
+        parent::__construct($params['PaymentResponse'] ?? []);
+    }
 
+    public function isOk(): bool
+    {
+        return $this->paymentID !== null;
+    }
 }

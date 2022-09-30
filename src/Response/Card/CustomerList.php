@@ -1,6 +1,6 @@
 <?php
 
-namespace Uzbek\Humo\Response;
+namespace Uzbek\Humo\Response\Card;
 
 use Uzbek\Humo\Dtos\Card\CustomerDto;
 

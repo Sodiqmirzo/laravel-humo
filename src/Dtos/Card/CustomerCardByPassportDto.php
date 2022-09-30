@@ -1,5 +1,5 @@
 <?php
-namespace Uzbek\Humo\Dtos;
+namespace Uzbek\Humo\Dtos\Card;
 
 /**
  * Created by Sodikmirzo.
@@ -8,7 +8,7 @@ namespace Uzbek\Humo\Dtos;
  * Time: 4:18 PM
  */
 
-use Uzbek\Humo\Response\BaseResponse;
+use Uzbek\Humo\Response\Card\BaseResponse;
 
 class CustomerCardByPassportDto extends BaseResponse
 {

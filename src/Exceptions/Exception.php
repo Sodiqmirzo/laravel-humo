@@ -8,7 +8,8 @@
 
 namespace Uzbek\Humo\Exceptions;
 
-class Exception
-{
+use Exception as BaseException;
 
+class Exception extends BaseException
+{
 }
