@@ -14,7 +14,10 @@ use Uzbek\Humo\Response\Card\BaseResponse;
 class CustomerDto extends BaseResponse
 {
     public string $customerId;
+
     public string $bankId;
+
     public string $cardholderName;
+
     public CardDto $Card;
 }

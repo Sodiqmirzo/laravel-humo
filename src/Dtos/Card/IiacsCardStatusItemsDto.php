@@ -14,7 +14,10 @@ use Uzbek\Humo\Response\Card\BaseResponse;
 class IiacsCardStatusItemsDto extends BaseResponse
 {
     public string $type;
+
     public string $actionCode;
+
     public string $actionDescription;
+
     public ?string $effectiveDate;
 }

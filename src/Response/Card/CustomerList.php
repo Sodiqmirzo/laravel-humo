@@ -10,7 +10,6 @@ use Uzbek\Humo\Dtos\Card\CustomerDto;
  * Date: 8/17/2022
  * Time: 4:29 PM
  */
-
 class CustomerList extends BaseResponse
 {
     public CustomerDto $Customer;

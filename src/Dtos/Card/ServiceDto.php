@@ -14,5 +14,6 @@ use Uzbek\Humo\Response\Card\BaseResponse;
 class ServiceDto extends BaseResponse
 {
     public string $serviceId;
+
     public string $serviceChannel;
 }

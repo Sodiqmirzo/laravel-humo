@@ -14,6 +14,8 @@ use Uzbek\Humo\Response\Card\BaseResponse;
 class IiacsCardMbDto extends BaseResponse
 {
     public string $state;
+
     public string $phone;
+
     public string $message;
 }
