@@ -2,7 +2,6 @@
 
 namespace Uzbek\Humo;
 
-
 use Uzbek\Humo\Models\Card;
 
 class Humo

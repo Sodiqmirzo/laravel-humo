@@ -77,11 +77,10 @@ class Payment extends BaseModel
         string $session_id,
         string $pan,
         string $expiry,
-        int    $amount,
+        int $amount,
         string $merchant_id,
         string $terminal_id
-    ): Create
-    {
+    ): Create {
         $xml = "<SOAP-ENV:Envelope
 	xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"
 	xmlns:ebppif1=\"urn:PaymentServer\">
@@ -229,7 +228,7 @@ class Payment extends BaseModel
 
         $ownerData = '';
         if ($amount > $this->max_amount_without_passport) {
-            if (!empty($ownerPassportDTO)) {
+            if (! empty($ownerPassportDTO)) {
                 foreach ($ownerPassportDTO->toArray() as $key => $value) {
                     $ownerData .= "<item>
               <name>{$key}</name>

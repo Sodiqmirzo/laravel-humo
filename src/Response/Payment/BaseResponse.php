@@ -19,7 +19,7 @@ class BaseResponse
 
     public function __get($name)
     {
-        $getter = 'get' . $name;
+        $getter = 'get'.$name;
         if (method_exists($this, $getter)) {
             // read property, e.g. getName()
             return $this->$getter();

@@ -24,6 +24,6 @@ class RecoConfirm extends BaseResponse
 
     public function isOk(): bool
     {
-        return (int)$this->action === 10;
+        return (int) $this->action === 10;
     }
 }

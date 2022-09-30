@@ -11,10 +11,10 @@ namespace Uzbek\Humo\Dtos\Payment;
 class OwnerPassportDTO
 {
     public function __construct(
-        public string  $serial_no,
-        public string  $id_card,
-        public string  $first_name,
-        public string  $surname,
+        public string $serial_no,
+        public string $id_card,
+        public string $first_name,
+        public string $surname,
         public ?string $middle_name = null,
         public ?string $nationality = null,
         public ?string $doc_type = null,

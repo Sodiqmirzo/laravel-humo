@@ -35,9 +35,9 @@ trait Utils
     public function getNewSessionID(): string
     {
         try {
-            $this->session_id = (string)Uuid::uuid4();
+            $this->session_id = (string) Uuid::uuid4();
         } catch (Exception $e) {
-            $this->session_id = (string)time();
+            $this->session_id = (string) time();
         }
 
         return $this->session_id;

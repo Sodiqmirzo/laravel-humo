@@ -16,8 +16,11 @@ use Illuminate\Support\Str;
 trait Base
 {
     private mixed $config;
+
     public ?string $originator;
+
     public ?string $centre_id;
+
     public int $max_amount_without_passport = 0;
 
     public function __construct()
@@ -34,7 +37,7 @@ trait Base
             'Content-Type' => 'application/json; charset=utf-8',
             'Accept' => 'application/json',
         ])->withToken($this->getToken())
-            ->$request_type($base_url . $url, $preparedParams)
+            ->$request_type($base_url.$url, $preparedParams)
             ->throw(function ($response, $e) {
                 throw new Exception($response->getBody()->getContents(), $response->status());
             })

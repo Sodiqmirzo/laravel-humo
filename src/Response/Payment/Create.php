@@ -10,7 +10,6 @@ namespace Uzbek\Humo\Response\Payment;
 
 class Create extends BaseResponse
 {
-
     private ?Details $_details = null;
 
     public function __construct(array $params)
