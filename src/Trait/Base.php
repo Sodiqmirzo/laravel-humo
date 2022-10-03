@@ -37,7 +37,7 @@ trait Base
             'Content-Type' => 'application/json; charset=utf-8',
             'Accept' => 'application/json',
         ])->withToken($this->getToken())
-            ->$request_type($base_url . $url, $preparedParams)
+            ->$request_type($base_url.$url, $preparedParams)
             ->throw(function ($response, $e) {
                 throw new Exception($response->getBody()->getContents(), $response->status());
             })
