@@ -16,7 +16,6 @@ use Uzbek\Humo\Response\BaseResponse;
  * @property-read string state
  * @property-read string|null msisdn
  * @property-read string deliveryChannel
- *
  * @property-read string|null number
  */
 class Phone extends BaseResponse

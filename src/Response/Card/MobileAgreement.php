@@ -12,6 +12,7 @@ use Uzbek\Humo\Response\BaseResponse;
 
 /**
  * Class MobileAgreement
+ *
  * @property-read string $description
  * @property-read string $state
  * @property-read string $phone
@@ -19,10 +20,15 @@ use Uzbek\Humo\Response\BaseResponse;
 class MobileAgreement extends BaseResponse
 {
     public const STATUS_ON = 'on';
+
     public const STATUS_OFF = 'off';
+
     public const STATUS_OFF_PHONE = 'off-phone';
+
     public const STATUS_NO_PHONE = 'no-phone';
+
     public const STATUS_OFF_CARD = 'off-card';
+
     public const STATUS_NO_CUSTOMER = 'no-customer';
 
     public function isActive(): bool

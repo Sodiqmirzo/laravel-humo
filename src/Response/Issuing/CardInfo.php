@@ -13,11 +13,9 @@ use Uzbek\Humo\DateHelper;
 use Uzbek\Humo\Exceptions\Exception;
 use Uzbek\Humo\Response\BaseResponse;
 
-
 /**
  * Class CardInfo
  *
- * @package usanjar\humo\response\issuing
  * @property-read string PVV_2
  * @property-read string STATUS2
  * @property-read string PVV_1
@@ -92,14 +90,13 @@ use Uzbek\Humo\Response\BaseResponse;
  * @property-read string RENEW_STATUS1
  * @property-read string CVC1_2
  * @property-read string CVC1_1
- *
  * @property-read bool isCardExpired
  */
 class CardInfo extends BaseResponse
 {
     public function __construct(array $params)
     {
-        $res_code = (int)($params['queryCardInfoResponse']['ResponseInfo']['response_code'] ?? -1);
+        $res_code = (int) ($params['queryCardInfoResponse']['ResponseInfo']['response_code'] ?? -1);
         if ($res_code === 0) {
             $data = $params['queryCardInfoResponse']['Details']['row']['item'] ?? [];
             $info = [];
@@ -130,13 +127,14 @@ class CardInfo extends BaseResponse
 
     /**
      * @return DateTime
+     *
      * @throws Exception
      */
     public function expiryDate(): DateTime
     {
         $expiry = DateHelper::expiry_date_from_string('Y-m-d\TH:i:s', $this->EXPIRY1);
         if ($expiry === false) {
-            throw new Exception('Невалидный формат даты: ' . $this->EXPIRY1);
+            throw new Exception('Невалидный формат даты: '.$this->EXPIRY1);
         }
 
         return $expiry;
@@ -144,6 +142,7 @@ class CardInfo extends BaseResponse
 
     /**
      * @return bool
+     *
      * @throws Exception
      */
     public function getIsCardExpired(): bool

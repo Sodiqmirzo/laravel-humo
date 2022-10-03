@@ -53,8 +53,8 @@ class Issuing extends BaseModel
         $session_id = $this->getNewSessionID();
         $bank_c = substr($card, 4, 2);
 
-        $begin_date = $beginDate->format('Y-m-d\T') . '00:00:00';
-        $end_date = $endDate->format('Y-m-d\T') . '23:59:59';
+        $begin_date = $beginDate->format('Y-m-d\T').'00:00:00';
+        $end_date = $endDate->format('Y-m-d\T').'23:59:59';
 
         $xml = "<soapenv:Envelope
 	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
@@ -84,7 +84,7 @@ class Issuing extends BaseModel
 </soapenv:Envelope>";
 
         $history = $this->sendXmlRequest('8443', $xml, $session_id, 'transactionHistory');
-        $res_code = (int)($history['queryTransactionHistoryResponse']['ResponseInfo']['response_code'] ?? -1);
+        $res_code = (int) ($history['queryTransactionHistoryResponse']['ResponseInfo']['response_code'] ?? -1);
         if ($res_code === 0) {
             $data = $history['queryTransactionHistoryResponse']['Details']['row'] ?? [];
 
@@ -124,9 +124,9 @@ class Issuing extends BaseModel
 
     public function execute_transaction(
         string $card,
-        int    $operation_id,
-        int    $amount,
-        bool   $isCredit
+        int $operation_id,
+        int $amount,
+        bool $isCredit
     ): ExecuteTransaction {
         $session_id = $this->getNewSessionID();
         $bank_c = substr($card, 4, 2);

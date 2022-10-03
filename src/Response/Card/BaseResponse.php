@@ -12,5 +12,4 @@ use Spatie\DataTransferObject\DataTransferObject;
 
 class BaseResponse extends DataTransferObject
 {
-
 }

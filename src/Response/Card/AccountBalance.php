@@ -13,7 +13,9 @@ use Uzbek\Humo\Response\BaseResponse;
 class AccountBalance extends BaseResponse
 {
     private ?Card $_card = null;
+
     private ?Balance $_balance = null;
+
     private ?Account $_account = null;
 
     public function __construct(array $attributes)

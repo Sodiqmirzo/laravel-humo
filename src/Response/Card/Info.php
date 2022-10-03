@@ -15,12 +15,19 @@ use Uzbek\Humo\Response\BaseResponse;
 class Info extends BaseResponse
 {
     public const INDEX_CARD = 0;
+
     public const INDEX_MOBILE = 1;
+
     public const STATUS_OK = 'ok';
+
     public const STATUS_ERROR = 'error';
+
     private ?CardInfo $_card = null;
+
     private ?MobileAgreement $_mobileAgreement = null;
+
     public const KEY_CARD = 'card';
+
     public const KEY_MOBILE_AGREEMENT = 'mb_agreement';
 
     public function __construct(array $attributes)
@@ -89,7 +96,7 @@ class Info extends BaseResponse
     protected function findByIndex(int $index): array
     {
         foreach ($this->records as $record) {
-            if (isset($record['index']) && (int)$record['index'] === $index) {
+            if (isset($record['index']) && (int) $record['index'] === $index) {
                 return current($record['data'] ?? []) ?: [];
             }
         }
@@ -99,6 +106,7 @@ class Info extends BaseResponse
 
     /**
      * @param $items
+     *
      * @throws ClientException
      */
     protected function load($items)
