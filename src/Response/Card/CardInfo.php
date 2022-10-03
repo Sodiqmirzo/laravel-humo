@@ -13,6 +13,7 @@ use Uzbek\Humo\Response\BaseResponse;
 
 /**
  * Class CardInfo
+ *
  * @property-read string $pan
  * @property-read string $expiry
  * @property-read string $nameOnCard
@@ -24,13 +25,21 @@ use Uzbek\Humo\Response\BaseResponse;
 class CardInfo extends BaseResponse
 {
     public const STATUS_APPROVED = '000';
+
     public const STATUS_RESTRICTED_CARD = '104';
+
     public const STATUS_CARD_NOT_AFFECTIVE = '125';
+
     public const STATUS_PICK_UP_RESTRICTED_CARD = '204';
+
     public const STATUS_SPECIAL_CONDITION = '207';
+
     public const STATUS_LOST_CARD = '208';
+
     public const STATUS_STOLEN_CARD = '209';
+
     public const STATUS_CARD_IS_NOT_ACTIVE_AT_BANK = '280';
+
     public const STATUS_CARD_IS_NOT_ACTIVE_AT_CARDHOLDER = '281';
 
     public function ownerName(): ?string

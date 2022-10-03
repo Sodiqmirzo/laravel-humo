@@ -13,7 +13,6 @@ use Uzbek\Humo\Response\BaseResponse;
 
 /**
  * Class TransactionHistory
- * @package usanjar\humo\response\issuing
  *
  * @property string CTIME
  * @property string CLIENT
@@ -67,7 +66,6 @@ class TransactionHistory extends BaseResponse
 
         return $val;
     }
-
 
     public function transactionDateTime(): DateTime
     {

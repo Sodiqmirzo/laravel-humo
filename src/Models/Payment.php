@@ -23,6 +23,7 @@ use Uzbek\Humo\Response\Payment\RecoCreate;
 class Payment extends BaseModel
 {
     public const STATUS_APPROVED = 000;
+
     public const STATUS_APPROVED_HONOR_WITH_IDENTIFICATION = 001;
 
     public function p2pCreate(P2PCreateDTO $p2p): P2PCreate

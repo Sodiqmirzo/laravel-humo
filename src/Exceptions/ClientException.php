@@ -13,5 +13,4 @@ namespace Uzbek\Humo\Exceptions;
  */
 class ClientException extends Exception
 {
-
 }

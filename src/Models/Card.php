@@ -167,9 +167,9 @@ class Card extends BaseModel
             foreach ($statuses as $status) {
                 if ($status['type'] == 'card') {
                     $card_status = [
-                        "actionCode" => $status['actionCode'],
-                        "actionDescription" => $status['actionDescription'],
-                        "effectiveDate" => $status['effectiveDate'],
+                        'actionCode' => $status['actionCode'],
+                        'actionDescription' => $status['actionDescription'],
+                        'effectiveDate' => $status['effectiveDate'],
                     ];
 
                     break;
@@ -177,37 +177,37 @@ class Card extends BaseModel
             }
 
             $info = new Info([
-                "count" => 2,
-                "success" => 2,
-                "fail" => 0,
-                "records" => [
+                'count' => 2,
+                'success' => 2,
+                'fail' => 0,
+                'records' => [
                     [
-                        "status" => "ok",
-                        "index" => 0,
-                        "data" => [
+                        'status' => 'ok',
+                        'index' => 0,
+                        'data' => [
                             [
-                                "card" => [
-                                    "pan" => $card['primaryAccountNumber'],
-                                    "expiry" => $card['expiry'],
-                                    "institutionId" => $card['institutionId'],
-                                    "nameOnCard" => $card['nameOnCard'],
-                                    "cardholderId" => $card['cardUserId'],
-                                    "statuses" => $card_status,
-                                    "bank_c" => $card['bankC'],
-                                    "pinTryCount" => $card['pinTryCount'],
+                                'card' => [
+                                    'pan' => $card['primaryAccountNumber'],
+                                    'expiry' => $card['expiry'],
+                                    'institutionId' => $card['institutionId'],
+                                    'nameOnCard' => $card['nameOnCard'],
+                                    'cardholderId' => $card['cardUserId'],
+                                    'statuses' => $card_status,
+                                    'bank_c' => $card['bankC'],
+                                    'pinTryCount' => $card['pinTryCount'],
                                 ],
                             ],
                         ],
                     ],
                     [
-                        "status" => "ok",
-                        "index" => 1,
-                        "data" => [
+                        'status' => 'ok',
+                        'index' => 1,
+                        'data' => [
                             [
-                                "mb_agreement" => [
-                                    "description" => $card['mb']['message'] ?? '',
-                                    "state" => $card['mb']['state'] ?? '',
-                                    "phone" => $card['mb']['phone'] ?? '',
+                                'mb_agreement' => [
+                                    'description' => $card['mb']['message'] ?? '',
+                                    'state' => $card['mb']['state'] ?? '',
+                                    'phone' => $card['mb']['phone'] ?? '',
                                 ],
                             ],
                         ],
@@ -218,7 +218,7 @@ class Card extends BaseModel
             return $info;
         }
 
-        throw new Exception('MBPM Error! ' . __LINE__);
+        throw new Exception('MBPM Error! '.__LINE__);
     }
 
     public function customerCardByPassport(string $serialNo, string $idCard): CustomerCardByPassport

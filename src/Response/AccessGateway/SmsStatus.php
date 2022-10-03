@@ -13,7 +13,9 @@ use Uzbek\Humo\Response\BaseResponse;
 class SmsStatus extends BaseResponse
 {
     private ?Charge $_charge = null;
+
     private ?Card $_card = null;
+
     private ?Phone $_phone = null;
 
     public function __construct(array $attributes)
