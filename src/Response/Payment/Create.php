@@ -12,7 +12,6 @@ use Uzbek\Humo\Response\BaseResponse;
 
 class Create extends BaseResponse
 {
-
     private ?Details $_details = null;
 
     public function __construct(array $params)

@@ -80,7 +80,7 @@ class Payment extends BaseModel
         string $session_id,
         string $pan,
         string $expiry,
-        int    $amount,
+        int $amount,
         string $merchant_id,
         string $terminal_id
     ): Create {
