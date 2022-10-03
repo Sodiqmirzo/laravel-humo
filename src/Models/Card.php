@@ -25,7 +25,6 @@ use Uzbek\Humo\Response\Card\CustomerEditCard;
 use Uzbek\Humo\Response\Card\CustomerList;
 use Uzbek\Humo\Response\Card\CustomerRemoveCard;
 use Uzbek\Humo\Response\Card\ExchangeRate;
-use Uzbek\Humo\Response\Card\IiacsCard;
 use Uzbek\Humo\Response\Card\Info;
 use Uzbek\Humo\Response\Card\TransactionScoring;
 
