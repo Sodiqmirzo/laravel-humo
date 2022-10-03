@@ -8,6 +8,8 @@
 
 namespace Uzbek\Humo\Response\Payment;
 
+use Uzbek\Humo\Response\BaseResponse;
+
 class P2PCreate extends BaseResponse
 {
     public function __construct(array $params)

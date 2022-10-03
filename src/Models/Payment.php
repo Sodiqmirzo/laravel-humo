@@ -11,7 +11,7 @@ namespace Uzbek\Humo\Models;
 use Uzbek\Humo\Dtos\Payment\OwnerPassportDTO;
 use Uzbek\Humo\Dtos\Payment\P2PCreateDTO;
 use Uzbek\Humo\Exceptions\ExceededAmountException;
-use Uzbek\Humo\Response\Payment\BaseResponse;
+use Uzbek\Humo\Response\BaseResponse;
 use Uzbek\Humo\Response\Payment\Cancel;
 use Uzbek\Humo\Response\Payment\Confirm;
 use Uzbek\Humo\Response\Payment\Create;
@@ -22,6 +22,9 @@ use Uzbek\Humo\Response\Payment\RecoCreate;
 
 class Payment extends BaseModel
 {
+    public const STATUS_APPROVED = 000;
+    public const STATUS_APPROVED_HONOR_WITH_IDENTIFICATION = 001;
+
     public function p2pCreate(P2PCreateDTO $p2p): P2PCreate
     {
         $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -80,8 +83,7 @@ class Payment extends BaseModel
         int    $amount,
         string $merchant_id,
         string $terminal_id
-    ): Create
-    {
+    ): Create {
         $xml = "<SOAP-ENV:Envelope
 	xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"
 	xmlns:ebppif1=\"urn:PaymentServer\">
@@ -229,7 +231,7 @@ class Payment extends BaseModel
 
         $ownerData = '';
         if ($amount > $this->max_amount_without_passport) {
-            if (!empty($ownerPassportDTO)) {
+            if (! empty($ownerPassportDTO)) {
                 foreach ($ownerPassportDTO->toArray() as $key => $value) {
                     $ownerData .= "<item>
               <name>{$key}</name>

@@ -8,6 +8,8 @@
 
 namespace Uzbek\Humo\Response\Payment;
 
+use Uzbek\Humo\Response\BaseResponse;
+
 /**
  * Class ConfirmDetails
  *

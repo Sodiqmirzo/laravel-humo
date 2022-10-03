@@ -6,7 +6,7 @@
  * Time: 1:12 PM
  */
 
-namespace Uzbek\Humo\Response\Payment;
+namespace Uzbek\Humo\Response;
 
 class BaseResponse
 {

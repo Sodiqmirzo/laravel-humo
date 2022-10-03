@@ -13,6 +13,8 @@ use Uzbek\Humo\Dtos\Card\ChargeDto;
 use Uzbek\Humo\Dtos\Card\EmailDto;
 use Uzbek\Humo\Dtos\Card\PhoneDto;
 use Uzbek\Humo\Dtos\Card\RateDto;
+use Uzbek\Humo\Exceptions\Exception;
+use Uzbek\Humo\Response\Card\AccountBalance;
 use Uzbek\Humo\Response\Card\Customer;
 use Uzbek\Humo\Response\Card\CustomerActivate;
 use Uzbek\Humo\Response\Card\CustomerCardByPassport;
@@ -24,6 +26,7 @@ use Uzbek\Humo\Response\Card\CustomerList;
 use Uzbek\Humo\Response\Card\CustomerRemoveCard;
 use Uzbek\Humo\Response\Card\ExchangeRate;
 use Uzbek\Humo\Response\Card\IiacsCard;
+use Uzbek\Humo\Response\Card\Info;
 use Uzbek\Humo\Response\Card\TransactionScoring;
 
 class Card extends BaseModel
@@ -45,6 +48,22 @@ class Card extends BaseModel
     public const STATUS_DECLINE_CARD_IS_NOT_ACTIVE_AT_BANK_WILL = 280;
 
     public const STATUS_DECLINE_CARD_IS_NOT_ACTIVE_AT_CARDHOLDER_WILL = 281;
+
+    public function accountBalance(string $card_number): AccountBalance
+    {
+        $xml = "<soapenv:Envelope
+	xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"
+	xmlns:urn=\"urn:IIACardServices\">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<urn:getCardAccountsBalance>
+			<primaryAccountNumber>{$card_number}</primaryAccountNumber>
+		</urn:getCardAccountsBalance>
+	</soapenv:Body>
+</soapenv:Envelope>";
+
+        return new AccountBalance($this->sendXmlRequest('6677', $xml, $this->getNewSessionID(), 'getCardAccountsBalance'));
+    }
 
     public function customerActivate(string $bankId, string $language = null, ChargeDto $chargeDto, CardDto $cardDto, PhoneDto $phoneDto, EmailDto $emailDto): CustomerActivate
     {
@@ -129,14 +148,78 @@ class Card extends BaseModel
         return new CustomerEditCard($response);
     }
 
-    public function info(string $primaryAccountNumber, int $mbFlag): IiacsCard
+    public function info(string $primaryAccountNumber, int $mbFlag)
     {
         $response = $this->sendRequest('post', '/v2/iiacs/card', [
             'primaryAccountNumber' => $primaryAccountNumber,
             'mb_flag' => $mbFlag,
         ]);
 
-        return new IiacsCard($response);
+        if (isset($data['error'])) {
+            $message = $data['error']['message'] ?? 'Unknown Humo Middleware error';
+            $code = $data['error']['code'] ?? 10001;
+
+            throw new Exception($message, $code);
+        }
+        $card = $data['result']['card'] ?? null;
+        if ($card) {
+            $statuses = $card['statuses']['item'] ?? [];
+            $card_status = '';
+            foreach ($statuses as $status) {
+                if ($status['type'] == 'card') {
+                    $card_status = [
+                        "actionCode" => $status['actionCode'],
+                        "actionDescription" => $status['actionDescription'],
+                        "effectiveDate" => $status['effectiveDate'],
+                    ];
+
+                    break;
+                }
+            }
+
+            $info = new Info([
+                "count" => 2,
+                "success" => 2,
+                "fail" => 0,
+                "records" => [
+                    [
+                        "status" => "ok",
+                        "index" => 0,
+                        "data" => [
+                            [
+                                "card" => [
+                                    "pan" => $card['primaryAccountNumber'],
+                                    "expiry" => $card['expiry'],
+                                    "institutionId" => $card['institutionId'],
+                                    "nameOnCard" => $card['nameOnCard'],
+                                    "cardholderId" => $card['cardUserId'],
+                                    "statuses" => $card_status,
+                                    "bank_c" => $card['bankC'],
+                                    "pinTryCount" => $card['pinTryCount'],
+                                ],
+                            ],
+                        ],
+                    ],
+                    [
+                        "status" => "ok",
+                        "index" => 1,
+                        "data" => [
+                            [
+                                "mb_agreement" => [
+                                    "description" => $card['mb']['message'] ?? '',
+                                    "state" => $card['mb']['state'] ?? '',
+                                    "phone" => $card['mb']['phone'] ?? '',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
+
+            return $info;
+        }
+
+        throw new Exception('MBPM Error! ' . __LINE__);
     }
 
     public function customerCardByPassport(string $serialNo, string $idCard): CustomerCardByPassport
