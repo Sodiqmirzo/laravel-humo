@@ -12,5 +12,4 @@ use Uzbek\Humo\Response\BaseResponse;
 
 class AccessGatewayException extends BaseResponse
 {
-
 }

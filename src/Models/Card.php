@@ -19,17 +19,15 @@ use Uzbek\Humo\Response\Card\Info;
 
 class Card extends BaseModel
 {
-
     /**
-     * @param string $card_number
-     *
+     * @param  string  $card_number
      * @return AccountBalance
+     *
      * @throws ClientException
      * @throws ConnectionException
      * @throws TimeoutException
      * @throws AccessGatewayException
      * @throws Exception
-     *
      */
     public function accountBalance(string $card_number): AccountBalance
     {
@@ -48,9 +46,10 @@ class Card extends BaseModel
     }
 
     /**
-     * @param string $card_number
-     * @param string $expire
+     * @param  string  $card_number
+     * @param  string  $expire
      * @return Info
+     *
      * @throws ClientException
      * @throws ConnectionException
      * @throws TimeoutException
@@ -126,7 +125,7 @@ class Card extends BaseModel
             return $info;
         }
 
-        throw new Exception('MBPM Error! ' . __LINE__);
+        throw new Exception('MBPM Error! '.__LINE__);
     }
 
     public function infoV1(string $card_number)
@@ -140,6 +139,7 @@ class Card extends BaseModel
     /**
      * @param $pan
      * @return mixed|null
+     *
      * @throws ClientException
      * @throws ConnectionException
      * @throws TimeoutException
@@ -149,7 +149,7 @@ class Card extends BaseModel
         $res = $this->sendRequest('json_info', 'get', '/api/getMaskedPan', [
             'query' => [
                 'pan' => $pan,
-            ],]);
+            ], ]);
 
         return $res['masked_pan'] ?? null;
     }
@@ -157,6 +157,7 @@ class Card extends BaseModel
     /**
      * @param $masked_pan
      * @return mixed|null
+     *
      * @throws ClientException
      * @throws ConnectionException
      * @throws TimeoutException

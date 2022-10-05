@@ -11,7 +11,6 @@ namespace Uzbek\Humo\Trait;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use Ramsey\Uuid\Nonstandard\Uuid;
 
 trait Base
@@ -38,7 +37,7 @@ trait Base
             'Content-Type' => 'application/json; charset=utf-8',
             'Accept' => 'application/json',
         ])->withToken($this->getToken())
-            ->$request_type($base_url[$url_type] . $url, $preparedParams)
+            ->$request_type($base_url[$url_type].$url, $preparedParams)
             ->throw(function ($response, $e) {
                 throw new Exception($response->getBody()->getContents(), $response->status());
             })

@@ -12,5 +12,4 @@ namespace Uzbek\Humo\Exceptions;
 
 class ConnectionException extends Exception
 {
-
 }

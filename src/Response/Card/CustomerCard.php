@@ -17,5 +17,4 @@ use Uzbek\Humo\Response\BaseResponse;
  */
 class CustomerCard extends BaseResponse
 {
-
 }
