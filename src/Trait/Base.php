@@ -11,7 +11,6 @@ namespace Uzbek\Humo\Trait;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use Ramsey\Uuid\Nonstandard\Uuid;
 
 trait Base

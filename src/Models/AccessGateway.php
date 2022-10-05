@@ -8,10 +8,26 @@
 
 namespace Uzbek\Humo\Models;
 
+use Uzbek\Humo\Exceptions\AccessGatewayException;
+use Uzbek\Humo\Exceptions\ClientException;
+use Uzbek\Humo\Exceptions\ConnectionException;
+use Uzbek\Humo\Exceptions\Exception;
+use Uzbek\Humo\Exceptions\TimeoutException;
 use Uzbek\Humo\Response\AccessGateway\SmsStatus;
 
 class AccessGateway extends BaseModel
 {
+
+    /**
+     * @param $holder_id
+     * @param $bank_id
+     * @return SmsStatus
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws TimeoutException
+     * @throws AccessGatewayException
+     * @throws Exception
+     */
     public function smsStatus($holder_id, $bank_id): SmsStatus
     {
         $session_id = $this->getNewSessionID();
@@ -30,6 +46,20 @@ class AccessGateway extends BaseModel
         return new SmsStatus($this->sendXmlRequest('13010', $xml, $session_id, 'smsStatus'));
     }
 
+    /**
+     * @param string $holderName
+     * @param string $holderID
+     * @param string $card_number
+     * @param string $card_expiry
+     * @param string $phone
+     *
+     * @return bool
+     * @throws AccessGatewayException
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws Exception
+     * @throws TimeoutException
+     */
     public function smsOn(string $holderName, string $holderID, string $card_number, string $card_expiry, string $phone): bool
     {
         $bank_c = substr($card_number, 4, 2);
