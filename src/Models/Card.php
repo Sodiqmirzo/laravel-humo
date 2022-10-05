@@ -8,46 +8,29 @@
 
 namespace Uzbek\Humo\Models;
 
-use Uzbek\Humo\Dtos\Card\CardDto;
-use Uzbek\Humo\Dtos\Card\ChargeDto;
-use Uzbek\Humo\Dtos\Card\EmailDto;
-use Uzbek\Humo\Dtos\Card\PhoneDto;
-use Uzbek\Humo\Dtos\Card\RateDto;
+use Uzbek\Humo\Exceptions\AccessGatewayException;
+use Uzbek\Humo\Exceptions\ClientException;
+use Uzbek\Humo\Exceptions\ConnectionException;
 use Uzbek\Humo\Exceptions\Exception;
+use Uzbek\Humo\Exceptions\TimeoutException;
 use Uzbek\Humo\Response\Card\AccountBalance;
 use Uzbek\Humo\Response\Card\Customer;
-use Uzbek\Humo\Response\Card\CustomerActivate;
-use Uzbek\Humo\Response\Card\CustomerCardByPassport;
-use Uzbek\Humo\Response\Card\CustomerChangeCardholdersMessageLang;
-use Uzbek\Humo\Response\Card\CustomerChangePhoneNumber;
-use Uzbek\Humo\Response\Card\CustomerDeactivate;
-use Uzbek\Humo\Response\Card\CustomerEditCard;
-use Uzbek\Humo\Response\Card\CustomerList;
-use Uzbek\Humo\Response\Card\CustomerRemoveCard;
-use Uzbek\Humo\Response\Card\ExchangeRate;
 use Uzbek\Humo\Response\Card\Info;
-use Uzbek\Humo\Response\Card\TransactionScoring;
 
 class Card extends BaseModel
 {
-    public const STATUS_APPROVED = 000;
 
-    public const STATUS_DECLINE_RESTRICTED_CARD = 104;
-
-    public const STATUS_CARD_NOT_EFFECTIVE = 125;
-
-    public const STATUS_PICK_UP_RESTRICTED_CARD = 204;
-
-    public const STATUS_PICK_UP_SPECIAL_CONDITIONS = 207;
-
-    public const STATUS_PICK_UP_LOST_CARD = 208;
-
-    public const STATUS_PICK_UP_STOLEN_CARD = 209;
-
-    public const STATUS_DECLINE_CARD_IS_NOT_ACTIVE_AT_BANK_WILL = 280;
-
-    public const STATUS_DECLINE_CARD_IS_NOT_ACTIVE_AT_CARDHOLDER_WILL = 281;
-
+    /**
+     * @param string $card_number
+     *
+     * @return AccountBalance
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws TimeoutException
+     * @throws AccessGatewayException
+     * @throws Exception
+     *
+     */
     public function accountBalance(string $card_number): AccountBalance
     {
         $xml = "<soapenv:Envelope
@@ -64,92 +47,17 @@ class Card extends BaseModel
         return new AccountBalance($this->sendXmlRequest('6677', $xml, $this->getNewSessionID(), 'getCardAccountsBalance'));
     }
 
-    public function customerActivate(string $bankId, string $language = null, ChargeDto $chargeDto, CardDto $cardDto, PhoneDto $phoneDto, EmailDto $emailDto): CustomerActivate
-    {
-        $response = $this->sendRequest('post', '/v2/mb/customer/activate', [
-            'bankId' => $bankId,
-            'language' => $language,
-            'Charge' => $chargeDto,
-            'Card' => $cardDto,
-            'Phone' => $phoneDto,
-            'Email' => $emailDto,
-        ]);
-
-        return new CustomerActivate($response);
-    }
-
-    public function getCustomer(string $customerId, string $bankId): Customer
-    {
-        $response = $this->sendRequest('post', '/v2/mb/customer', [
-            'customerId' => $customerId,
-            'bankId' => $bankId,
-        ]);
-
-        return new Customer($response);
-    }
-
-    public function getCustomerList(string $phone, string $bankId): CustomerList
-    {
-        $response = $this->sendRequest('post', '/v2/mb/customer-list', [
-            'phone' => $phone,
-            'bankId' => $bankId,
-        ]);
-
-        return new CustomerList($response);
-    }
-
-    public function customerDeactivate(string $customerId): CustomerDeactivate
-    {
-        $response = $this->sendRequest('post', '/v2/mb/customer/deactivate', [
-            'customerId' => $customerId,
-        ]);
-
-        return new CustomerDeactivate($response);
-    }
-
-    public function customerChangePhoneNumber(string $customerId, PhoneDto $phoneDto): CustomerChangePhoneNumber
-    {
-        $response = $this->sendRequest('post', '/v2/mb/customer/change-phone-number', [
-            'customerId' => $customerId,
-            'Phone' => $phoneDto,
-        ]);
-
-        return new CustomerChangePhoneNumber($response);
-    }
-
-    public function customerChangeCardholdersMessageLang(string $customerId, string $language): CustomerChangeCardholdersMessageLang
-    {
-        $response = $this->sendRequest('post', '/v2/mb/customer/change-cardholders-message-lang', [
-            'customerId' => $customerId,
-            'language' => $language,
-        ]);
-
-        return new CustomerChangeCardholdersMessageLang($response);
-    }
-
-    public function customerRemoveCard(string $pan): CustomerRemoveCard
-    {
-        $response = $this->sendRequest('post', '/v2/mb/customer/remove-card', [
-            'Card' => [
-                'pan' => $pan,
-            ],
-        ]);
-
-        return new CustomerRemoveCard($response);
-    }
-
-    public function customerEditCard(CardDto $cardDto): CustomerEditCard
-    {
-        $response = $this->sendRequest('post', '/v2/mb/customer/edit-card', [
-            'Card' => $cardDto,
-        ]);
-
-        return new CustomerEditCard($response);
-    }
-
+    /**
+     * @param string $card_number
+     * @param string $expire
+     * @return Info
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws TimeoutException
+     */
     public function info(string $primaryAccountNumber, int $mbFlag)
     {
-        $response = $this->sendRequest('post', '/v2/iiacs/card', [
+        $response = $this->sendRequest('json_info', 'post', '/v2/iiacs/card', [
             'primaryAccountNumber' => $primaryAccountNumber,
             'mb_flag' => $mbFlag,
         ]);
@@ -218,46 +126,57 @@ class Card extends BaseModel
             return $info;
         }
 
-        throw new Exception('MBPM Error! '.__LINE__);
+        throw new Exception('MBPM Error! ' . __LINE__);
     }
 
-    public function customerCardByPassport(string $serialNo, string $idCard): CustomerCardByPassport
+    public function infoV1(string $card_number)
     {
-        $response = $this->sendRequest('post', '/cs/v1/customer/cards/by-passport', [
-            'serial_no' => $serialNo,
-            'id_card' => $idCard,
-        ]);
-
-        return new CustomerCardByPassport($response);
+        return new Info($this->sendRequest('json_info', 'POST', '/v2/iiacs/card', [
+            'primaryAccountNumber' => $card_number,
+            'mb_flag' => 1,
+        ]));
     }
 
-    public function customerCardByPersonCode(string $personCode): CustomerCardByPassport
+    /**
+     * @param $pan
+     * @return mixed|null
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws TimeoutException
+     */
+    public function getMaskedPan($pan)
     {
-        $response = $this->sendRequest('post', '/cs/v1/customer/cards/by-person-code', [
-            'person_code' => $personCode,
-        ]);
+        $res = $this->sendRequest('json_info', 'get', '/api/getMaskedPan', [
+            'query' => [
+                'pan' => $pan,
+            ],]);
 
-        return new CustomerCardByPassport($response);
+        return $res['masked_pan'] ?? null;
     }
 
-    public function transactionScoring(string $card, string $dateFrom, string $dateTo): TransactionScoring
+    /**
+     * @param $masked_pan
+     * @return mixed|null
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws TimeoutException
+     */
+    public function getRealPan($masked_pan)
     {
-        $response = $this->sendRequest('post', '/cs/v1/transactions/scoring', [
-            'card' => $card,
-            'date_from' => $dateFrom,
-            'date_to' => $dateTo,
+        $res = $this->sendRequest('json_info', 'get', '/api/getRealPan', [
+            'query' => [
+                'masked_pan' => $masked_pan,
+            ],
         ]);
 
-        //TODO asking response
-        return new TransactionScoring($response);
+        return $res['pan'] ?? null;
     }
 
-    public function exchangeRate(RateDto $rate): ExchangeRate
+    public function getConsumerList(string $phone, string $bankId = 'MB_STD'): Customer
     {
-        $response = $this->sendRequest('post', '/v2/ccr2/exchange-rates', [
-            'rate' => $rate,
-        ]);
-
-        return new ExchangeRate($response);
+        return new Customer($this->sendRequest('json_info', 'POST', '/v2/mb/customer-list', [
+            'phone' => $phone,
+            'bankId' => $bankId,
+        ]));
     }
 }

@@ -12,6 +12,7 @@ namespace Uzbek\Humo\Trait;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Nonstandard\Uuid;
 
 trait Base
 {
@@ -28,7 +29,7 @@ trait Base
         $this->config = config('humo-svgate');
     }
 
-    public function sendRequest(string $request_type, string $url, array $params)
+    public function sendRequest(string $url_type, string $request_type, string $url, array $params)
     {
         $base_url = $this->config['base_url'];
         $preparedParams = $this->prepareRequestParams($params);
@@ -37,7 +38,7 @@ trait Base
             'Content-Type' => 'application/json; charset=utf-8',
             'Accept' => 'application/json',
         ])->withToken($this->getToken())
-            ->$request_type($base_url . $url, $preparedParams)
+            ->$request_type($base_url[$url_type] . $url, $preparedParams)
             ->throw(function ($response, $e) {
                 throw new Exception($response->getBody()->getContents(), $response->status());
             })
@@ -65,7 +66,7 @@ trait Base
     public function prepareRequestParams($params): array
     {
         return [
-            'id' => Str::random(40),
+            'id' => Uuid::uuid4(),
             'params' => $params,
         ];
     }

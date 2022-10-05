@@ -2,10 +2,7 @@
 
 namespace Uzbek\Humo\Response\Card;
 
-use Uzbek\Humo\Dtos\Card\CardDto;
-use Uzbek\Humo\Dtos\Card\ChargeDto;
-use Uzbek\Humo\Dtos\Card\EmailDto;
-use Uzbek\Humo\Dtos\Card\PhoneDto;
+use Uzbek\Humo\Response\BaseResponse;
 
 /**
  * Created by Sodikmirzo.
@@ -15,21 +12,16 @@ use Uzbek\Humo\Dtos\Card\PhoneDto;
  */
 class Customer extends BaseResponse
 {
-    public string $customerId;
+    public array $list = [];
 
-    public string $bankId;
+    public function __construct(array $attributes)
+    {
+        parent::__construct($attributes);
 
-    public string $cardholderName;
-
-    public string $state;
-
-    public string $language;
-
-    public ChargeDto $Charge;
-
-    public CardDto $Card;
-
-    public PhoneDto $Phone;
-
-    public EmailDto $Email;
+        if (! empty($attributes['result']['Customer'])) {
+            foreach ($attributes['result']['Customer'] as $item) {
+                $this->list[] = new CustomerItem($item);
+            }
+        }
+    }
 }

@@ -7,5 +7,6 @@ return [
         '13010' => 'https://humo.uz/api/v1/', /*access gateway*/
         '8443' => 'https://humo.uz/api/v1/', /*issuing*/
         '6677' => 'https://humo.uz/api/v1/', /*card*/
+        'json_info' => 'https://humo.uz/api/v1/', /*json info*/
     ],
 ];
