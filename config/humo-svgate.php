@@ -9,4 +9,8 @@ return [
         '6677' => 'https://humo.uz/api/v1/', /*card*/
         'json_info' => 'https://humo.uz/api/v1/', /*json info*/
     ],
+    'username' => env('HUMO_USERNAME', 'username'),
+    'password' => env('HUMO_PASSWORD', 'password'),
+    'token' => env('HUMO_TOKEN', 'token'),
+    'max_amount_without_passport' => env('HUMO_MAX_AMOUNT_WITHOUT_PASSPORT', 0),
 ];

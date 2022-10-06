@@ -42,7 +42,7 @@ class Card extends BaseModel
 	</soapenv:Body>
 </soapenv:Envelope>";
 
-        return new AccountBalance($this->sendXmlRequest('6677', $xml, $this->getNewSessionID(), 'getCardAccountsBalance'));
+        return new AccountBalance($this->sendXmlRequest('6677', $xml, $this->getSessionID(), 'getCardAccountsBalance'));
     }
 
     /**

@@ -164,7 +164,7 @@ class Payment extends BaseModel
 	</SOAP-ENV:Body>
 </SOAP-ENV:Envelope>";
 
-        return new Create($this->sendXmlRequest('11210', $xml, $this->getNewSessionID(), 'payment.create'));
+        return new Create($this->sendXmlRequest('11210', $xml, $this->getSessionID(), 'payment.create'));
     }
 
     /**
@@ -192,7 +192,7 @@ class Payment extends BaseModel
                 </SOAP-ENV:Body>
                 </SOAP-ENV:Envelope>";
 
-        return new Confirm($this->sendXmlRequest('11210', $xml, $this->getNewSessionID(), 'payment.confirm'));
+        return new Confirm($this->sendXmlRequest('11210', $xml, $this->getSessionID(), 'payment.confirm'));
     }
 
     /**
@@ -221,7 +221,7 @@ class Payment extends BaseModel
 	</soapenv:Body>
 </soapenv:Envelope>";
 
-        return new Cancel($this->sendXmlRequest('11210', $xml, $this->getNewSessionID(), 'payment.cancel'));
+        return new Cancel($this->sendXmlRequest('11210', $xml, $this->getSessionID(), 'payment.cancel'));
     }
 
     /**
@@ -238,7 +238,7 @@ class Payment extends BaseModel
      */
     public function return(string $payment_id, string $merchant_id, string $terminal_id)
     {
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
 
         $xml = "<soapenv:Envelope
 	xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"
@@ -342,7 +342,7 @@ class Payment extends BaseModel
             </SOAP-ENV:Body>
         </SOAP-ENV:Envelope>";
 
-        return new P2pCreate($this->sendXmlRequest('11210', $xml, $this->getNewSessionID(), 'payment.p2pCreate'));
+        return new P2pCreate($this->sendXmlRequest('11210', $xml, $this->getSessionID(), 'payment.p2pCreate'));
     }
 
     /**
@@ -374,7 +374,7 @@ class Payment extends BaseModel
     </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>";
 
-        return new Confirm($this->sendXmlRequest('11210', $xml, $this->getNewSessionID(), 'payment.p2pConfirm'));
+        return new Confirm($this->sendXmlRequest('11210', $xml, $this->getSessionID(), 'payment.p2pConfirm'));
     }
 
     /**
@@ -394,7 +394,7 @@ class Payment extends BaseModel
      */
     public function credit(string $pan, string $expiry, int $amount, string $merchant_id, string $terminal_id, OwnerPassportDTO $ownerPassportDTO = null): Create
     {
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
 
         $ownerData = '';
         if ($amount > $this->max_amount_without_passport) {
@@ -480,7 +480,7 @@ class Payment extends BaseModel
      */
     public function credit_old(string $pan, string $expiry, int $amount, string $merchant_id, string $terminal_id): Create
     {
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
 
         $xml = "<SOAP-ENV:Envelope
   xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"
@@ -569,7 +569,7 @@ class Payment extends BaseModel
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>";
 
-        return new RecoCreate($this->sendXmlRequest('11210', $xml, $this->getNewSessionID(), 'reco.create'));
+        return new RecoCreate($this->sendXmlRequest('11210', $xml, $this->getSessionID(), 'reco.create'));
     }
 
     /**
@@ -601,7 +601,7 @@ class Payment extends BaseModel
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>";
 
-        return new RecoConfirm($this->sendXmlRequest('11210', $xml, $this->getNewSessionID(), 'reco.confirm'));
+        return new RecoConfirm($this->sendXmlRequest('11210', $xml, $this->getSessionID(), 'reco.confirm'));
     }
 
     /**
@@ -628,6 +628,6 @@ class Payment extends BaseModel
     </soapenv:Body>
 </soapenv:Envelope>";
 
-        return new BaseResponse($this->sendXmlRequest('11210', $xml, $this->getNewSessionID(), 'payment.status'));
+        return new BaseResponse($this->sendXmlRequest('11210', $xml, $this->getSessionID(), 'payment.status'));
     }
 }

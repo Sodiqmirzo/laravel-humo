@@ -30,7 +30,7 @@ class AccessGateway extends BaseModel
      */
     public function smsStatus($holder_id, $bank_id): SmsStatus
     {
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
         $xml = "<soapenv:Envelope
 	xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"
 	xmlns:urn=\"urn:AccessGateway\">
@@ -99,7 +99,7 @@ class AccessGateway extends BaseModel
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>";
 
-        $result = $this->sendXmlRequest('13010', $xml, $this->getNewSessionID(), 'smsOn');
+        $result = $this->sendXmlRequest('13010', $xml, $this->getSessionID(), 'smsOn');
 
         if (isset($result['importResponse']) && is_array($result['importResponse'])) {
             return empty($result['importResponse']);

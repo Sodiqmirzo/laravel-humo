@@ -26,7 +26,7 @@ class Issuing extends BaseModel
 {
     public function queryCardInfo(string $card): CardInfo
     {
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
         $bank_c = substr($card, 4, 2);
 
         $xml = "<soapenv:Envelope
@@ -58,7 +58,7 @@ class Issuing extends BaseModel
 
     public function transactionHistory(string $card, DateTime $beginDate, DateTime $endDate): array
     {
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
         $bank_c = substr($card, 4, 2);
 
         $begin_date = $beginDate->format('Y-m-d\T').'00:00:00';
@@ -136,7 +136,7 @@ class Issuing extends BaseModel
         int $amount,
         bool $isCredit
     ): ExecuteTransaction {
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
         $bank_c = substr($card, 4, 2);
         $slip_nr = substr($operation_id, -8);
         $batch_nr = date('ymd');
@@ -199,7 +199,7 @@ class Issuing extends BaseModel
     public function addCardToStop(string $card, string $reason = 'user block'): AddCardToStop
     {
         $bank_c = substr($card, 4, 2);
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
 
         $xml = "<soapenv:Envelope
 	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
@@ -242,7 +242,7 @@ class Issuing extends BaseModel
     public function removeCardFromStop(string $card, string $reason = 'User unblock'): RemoveCardFromStop
     {
         $bank_c = substr($card, 4, 2);
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
 
         $xml = "<soapenv:Envelope
 	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
@@ -286,7 +286,7 @@ class Issuing extends BaseModel
     public function getRealCard(string $card_number): GetRealCard
     {
         $bank_c = substr($card_number, 4, 2);
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
 
         $xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <SOAP-ENV:Envelope
@@ -327,7 +327,7 @@ SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"
     public function resetPINCounter(string $card, string $expire, string $reason = 'RESET BY OWNER'): ResetPinCounter
     {
         $bank_c = substr($card, 4, 2);
-        $session_id = $this->getNewSessionID();
+        $session_id = $this->getSessionID();
 
         $xml = "<soapenv:Envelope
                     xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'
