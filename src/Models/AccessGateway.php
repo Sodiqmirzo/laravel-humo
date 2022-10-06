@@ -17,11 +17,11 @@ use Uzbek\Humo\Response\AccessGateway\SmsStatus;
 
 class AccessGateway extends BaseModel
 {
-
     /**
      * @param $holder_id
      * @param $bank_id
      * @return SmsStatus
+     *
      * @throws ClientException
      * @throws ConnectionException
      * @throws TimeoutException
@@ -47,13 +47,13 @@ class AccessGateway extends BaseModel
     }
 
     /**
-     * @param string $holderName
-     * @param string $holderID
-     * @param string $card_number
-     * @param string $card_expiry
-     * @param string $phone
-     *
+     * @param  string  $holderName
+     * @param  string  $holderID
+     * @param  string  $card_number
+     * @param  string  $card_expiry
+     * @param  string  $phone
      * @return bool
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
