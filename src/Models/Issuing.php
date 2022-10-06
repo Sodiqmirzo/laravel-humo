@@ -9,9 +9,17 @@
 namespace Uzbek\Humo\Models;
 
 use DateTime;
+use Uzbek\Humo\Exceptions\AccessGatewayException;
+use Uzbek\Humo\Exceptions\ClientException;
+use Uzbek\Humo\Exceptions\ConnectionException;
 use Uzbek\Humo\Exceptions\Exception;
+use Uzbek\Humo\Exceptions\TimeoutException;
+use Uzbek\Humo\Response\Issuing\AddCardToStop;
 use Uzbek\Humo\Response\Issuing\CardInfo;
 use Uzbek\Humo\Response\Issuing\ExecuteTransaction;
+use Uzbek\Humo\Response\Issuing\GetRealCard;
+use Uzbek\Humo\Response\Issuing\RemoveCardFromStop;
+use Uzbek\Humo\Response\Issuing\ResetPinCounter;
 use Uzbek\Humo\Response\Issuing\TransactionHistory;
 
 class Issuing extends BaseModel
@@ -53,8 +61,8 @@ class Issuing extends BaseModel
         $session_id = $this->getNewSessionID();
         $bank_c = substr($card, 4, 2);
 
-        $begin_date = $beginDate->format('Y-m-d\T').'00:00:00';
-        $end_date = $endDate->format('Y-m-d\T').'23:59:59';
+        $begin_date = $beginDate->format('Y-m-d\T') . '00:00:00';
+        $end_date = $endDate->format('Y-m-d\T') . '23:59:59';
 
         $xml = "<soapenv:Envelope
 	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
@@ -84,7 +92,7 @@ class Issuing extends BaseModel
 </soapenv:Envelope>";
 
         $history = $this->sendXmlRequest('8443', $xml, $session_id, 'transactionHistory');
-        $res_code = (int) ($history['queryTransactionHistoryResponse']['ResponseInfo']['response_code'] ?? -1);
+        $res_code = (int)($history['queryTransactionHistoryResponse']['ResponseInfo']['response_code'] ?? -1);
         if ($res_code === 0) {
             $data = $history['queryTransactionHistoryResponse']['Details']['row'] ?? [];
 
@@ -124,10 +132,11 @@ class Issuing extends BaseModel
 
     public function execute_transaction(
         string $card,
-        int $operation_id,
-        int $amount,
-        bool $isCredit
-    ): ExecuteTransaction {
+        int    $operation_id,
+        int    $amount,
+        bool   $isCredit
+    ): ExecuteTransaction
+    {
         $session_id = $this->getNewSessionID();
         $bank_c = substr($card, 4, 2);
         $slip_nr = substr($operation_id, -8);
@@ -175,5 +184,173 @@ class Issuing extends BaseModel
 </soapenv:Envelope>";
 
         return new ExecuteTransaction($this->sendXmlRequest('8443', $xml, $session_id, 'execute_transaction'));
+    }
+
+    /**
+     * @param string $card
+     * @param string $reason
+     *
+     * @return AddCardToStop
+     * @throws AccessGatewayException
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws Exception
+     * @throws TimeoutException
+     */
+    public function addCardToStop(string $card, string $reason = 'user block'): AddCardToStop
+    {
+        $bank_c = substr($card, 4, 2);
+        $session_id = $this->getNewSessionID();
+
+        $xml = "<soapenv:Envelope
+	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+	xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"
+	xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"
+	xmlns:bin=\"urn:IssuingWS/binding\">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<bin:addCardToStop soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
+			<ConnectionInfo xsi:type=\"urn:OperationConnectionInfo\" xmlns:urn=\"urn:issuing_v_01_02_xsd\">
+				<BANK_C xsi:type=\"xsd:string\">{$bank_c}</BANK_C>
+				<GROUPC xsi:type=\"xsd:string\">01</GROUPC>
+				<EXTERNAL_SESSION_ID xsi:type=\"xsd:string\">{$session_id}</EXTERNAL_SESSION_ID>
+			</ConnectionInfo>
+			<Parameters xsi:type=\"urn:RowType_AddCardToStopList_Request\" xmlns:urn=\"urn:issuing_v_01_02_xsd\">
+				<CARD xsi:type=\"xsd:string\">{$card}</CARD>
+				<STOP_CAUSE xsi:type=\"xsd:string\">B</STOP_CAUSE>
+				<TEXT xsi:type=\"xsd:string\">{$reason}</TEXT>
+				<BANK_C xsi:type=\"xsd:string\">{$bank_c}</BANK_C>
+				<GROUPC xsi:type=\"xsd:string\">01</GROUPC>
+			</Parameters>
+		</bin:addCardToStop>
+	</soapenv:Body>
+</soapenv:Envelope>";
+
+        return new AddCardToStop($this->sendXmlRequest('8443', $xml, $session_id, 'addCardToStop'));
+    }
+
+    /**
+     * @param string $card
+     * @param string $reason
+     *
+     * @return RemoveCardFromStop
+     * @throws AccessGatewayException
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws Exception
+     * @throws TimeoutException
+     */
+    public function removeCardFromStop(string $card, string $reason = 'User unblock'): RemoveCardFromStop
+    {
+        $bank_c = substr($card, 4, 2);
+        $session_id = $this->getNewSessionID();
+
+        $xml = "<soapenv:Envelope
+	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+	xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"
+	xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"
+	xmlns:bin=\"urn:IssuingWS/binding\">
+	<soapenv:Header/>
+	<soapenv:Body>
+		<bin:removeCardFromStop soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">
+			<ConnectionInfo xsi:type=\"urn:OperationConnectionInfo\"
+				xmlns:urn=\"urn:issuing_v_01_02_xsd\">
+				<BANK_C xsi:type=\"xsd:string\">{$bank_c}</BANK_C>
+				<GROUPC xsi:type=\"xsd:string\">01</GROUPC>
+				<EXTERNAL_SESSION_ID xsi:type=\"xsd:string\">{$session_id}</EXTERNAL_SESSION_ID>
+			</ConnectionInfo>
+			<Parameters xsi:type=\"urn:RowType_RemoveCardFromStop_Request\"
+				xmlns:urn=\"urn:issuing_v_01_02_xsd\">
+				<CARD xsi:type=\"xsd:string\">{$card}</CARD>
+				<TEXT xsi:type=\"xsd:string\">{$reason}</TEXT>
+				<BANK_C xsi:type=\"xsd:string\">{$bank_c}</BANK_C>
+				<GROUPC xsi:type=\"xsd:string\">01</GROUPC>
+				<STOP_CAUSE xsi:type=\"xsd:string\">0</STOP_CAUSE>
+			</Parameters>
+		</bin:removeCardFromStop>
+	</soapenv:Body>
+</soapenv:Envelope>";
+
+        return new RemoveCardFromStop($this->sendXmlRequest('8443', $xml, $session_id, 'removeCardFromStop'));
+    }
+
+    /**
+     * @param string $card_number
+     *
+     * @return GetRealCard
+     * @throws AccessGatewayException
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws Exception
+     * @throws TimeoutException
+     */
+    public function getRealCard(string $card_number): GetRealCard
+    {
+        $bank_c = substr($card_number, 4, 2);
+        $session_id = $this->getNewSessionID();
+
+        $xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<SOAP-ENV:Envelope
+SOAP-ENV:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\"
+	xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"
+	xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\"
+	xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+	xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">
+	<SOAP-ENV:Body>
+		<getRealCard>
+			<ConnectionInfo>
+				<BANK_C>{$bank_c}</BANK_C>
+				<GROUPC>01</GROUPC>
+				<EXTERNAL_SESSION_ID>{$session_id}</EXTERNAL_SESSION_ID>
+			</ConnectionInfo>
+			<Parameters>
+				<CARD>{$card_number}</CARD>
+			</Parameters>
+		</getRealCard>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>";
+
+        return new GetRealCard($this->sendXmlRequest('8443', $xml, $session_id, 'getRealCard'));
+    }
+
+    /**
+     * @param string $card
+     * @param string $expire
+     * @param string $reason
+     *
+     * @return ResetPinCounter
+     * @throws AccessGatewayException
+     * @throws ClientException
+     * @throws ConnectionException
+     * @throws Exception
+     * @throws TimeoutException
+     */
+    public function resetPINCounter(string $card, string $expire, string $reason = 'RESET BY OWNER'): ResetPinCounter
+    {
+        $bank_c = substr($card, 4, 2);
+        $session_id = $this->getNewSessionID();
+
+        $xml = "<soapenv:Envelope
+                    xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'
+                    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                    xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+                    <soapenv:Body>
+                        <resetPINCounter>
+                            <ConnectionInfo>
+                                <BANK_C>{$bank_c}</BANK_C>
+                                <GROUPC>01</GROUPC>
+                                <EXTERNAL_SESSION_ID>{$session_id}</EXTERNAL_SESSION_ID>
+                            </ConnectionInfo>
+                            <Parameters>
+                                <CARD></CARD>
+                                <EXPIRY>{$expire}</EXPIRY>
+                                <TEXT>{$reason}</TEXT>
+                                <OFFLINE>1</OFFLINE>
+                            </Parameters>
+                        </resetPINCounter>
+                    </soapenv:Body>
+                </soapenv:Envelope>";
+
+        return new ResetPinCounter($this->sendXmlRequest('8443', $xml, $session_id, 'resetPINCounter'));
     }
 }
