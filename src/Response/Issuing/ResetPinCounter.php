@@ -12,6 +12,7 @@ use Uzbek\Humo\Response\BaseResponse;
 
 /**
  * Class ResetPinCounter
+ *
  * @property-read string response_code
  * @property-read string error_description
  * @property-read string error_action

@@ -13,7 +13,7 @@ use Uzbek\Humo\Response\BaseResponse;
 /**
  * Class AddCardToStop
  *
- * @property-read integer response_code
+ * @property-read int response_code
  * @property-read string error_description
  * @property-read string error_action
  * @property-read string EXTERNAL_SESSION_ID
