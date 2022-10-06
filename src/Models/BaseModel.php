@@ -24,7 +24,6 @@ class BaseModel
 
     public ?string $session_id = null;
 
-
     public function __construct()
     {
         $this->config = config('humo-svgate');
@@ -39,7 +38,7 @@ class BaseModel
             'Accept' => 'application/json',
         ])
             ->withToken($this->config['token'])
-            ->$request_type($this->getBaseUrls()[$url_type] . $url, $preparedParams)
+            ->$request_type($this->getBaseUrls()[$url_type].$url, $preparedParams)
             ->throw(function ($response, $e) {
                 throw new Exception($response->getBody()->getContents(), $response->status());
             })
@@ -88,9 +87,9 @@ class BaseModel
     public function getNewSessionID(): string
     {
         try {
-            $this->session_id = (string)\Ramsey\Uuid\Uuid::uuid4();
+            $this->session_id = (string) \Ramsey\Uuid\Uuid::uuid4();
         } catch (Exception $e) {
-            $this->session_id = (string)time();
+            $this->session_id = (string) time();
         }
 
         return $this->session_id;
@@ -99,8 +98,7 @@ class BaseModel
     /**
      * Проверка карт на корпоративная
      *
-     * @param string $card
-     *
+     * @param  string  $card
      * @return bool
      */
     public function isCorp(string $card): bool
