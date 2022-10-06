@@ -1,7 +1,7 @@
 
 [<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
 
-# Humo svgate client for Laravel 9.x applications
+# Humo client for Laravel 9.x applications
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/humo/humo-svgate.svg?style=flat-square)](https://packagist.org/packages/humo/humo-svgate)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/humo/humo-svgate/run-tests?label=tests)](https://github.com/humo/humo-svgate/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -26,13 +26,6 @@ You can install the package via composer:
 composer require humo/humo-svgate
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="humo-svgate-migrations"
-php artisan migrate
-```
-
 You can publish the config file with:
 
 ```bash
@@ -43,14 +36,20 @@ This is the contents of the published config file:
 
 ```php
 return [
+'base_urls' => [
+        '11210' => 'https://humo.uz/api/v1/', /*payment*/
+        '13010' => 'https://humo.uz/api/v1/', /*access gateway*/
+        '8443' => 'https://humo.uz/api/v1/', /*issuing*/
+        '6677' => 'https://humo.uz/api/v1/', /*card*/
+        'json_info' => 'https://humo.uz/api/v1/', /*json info*/
+    ],
+    'username' => env('HUMO_USERNAME', 'username'),
+    'password' => env('HUMO_PASSWORD', 'password'),
+    'token' => env('HUMO_TOKEN', 'token'),
+    'max_amount_without_passport' => env('HUMO_MAX_AMOUNT_WITHOUT_PASSPORT', 0),
 ];
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="humo-svgate-views"
-```
 
 ## Usage
 
