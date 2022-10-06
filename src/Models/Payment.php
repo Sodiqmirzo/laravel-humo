@@ -27,16 +27,15 @@ use Uzbek\Humo\Response\Payment\RecoCreate;
 
 class Payment extends BaseModel
 {
-
     /**
-     * @param string $session_id
-     * @param string $pan
-     * @param string $expiry
-     * @param int $amount
-     * @param string $merchant_id
-     * @param string $terminal_id
-     *
+     * @param  string  $session_id
+     * @param  string  $pan
+     * @param  string  $expiry
+     * @param  int  $amount
+     * @param  string  $merchant_id
+     * @param  string  $terminal_id
      * @return Create
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -47,11 +46,10 @@ class Payment extends BaseModel
         string $session_id,
         string $pan,
         string $expiry,
-        int    $amount,
+        int $amount,
         string $merchant_id,
         string $terminal_id
-    ): Create
-    {
+    ): Create {
         $xml = "<SOAP-ENV:Envelope
 	xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"
 	xmlns:SOAP-ENC=\"http://schemas.xmlsoap.org/soap/encoding/\"
@@ -111,11 +109,10 @@ class Payment extends BaseModel
         string $session_id,
         string $pan,
         string $expiry,
-        int    $amount,
+        int $amount,
         string $merchant_id,
         string $terminal_id
-    ): Create
-    {
+    ): Create {
         $xml = "<SOAP-ENV:Envelope
 	xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"
 	xmlns:ebppif1=\"urn:PaymentServer\">
@@ -168,9 +165,9 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param string $payment_id
-     *
+     * @param  string  $payment_id
      * @return Confirm
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -196,10 +193,10 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param string $session_id
-     * @param string $payment_id
-     *
+     * @param  string  $session_id
+     * @param  string  $payment_id
      * @return Cancel
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -225,11 +222,11 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param string $payment_id
-     * @param string $merchant_id
-     * @param string $terminal_id
-     *
+     * @param  string  $payment_id
+     * @param  string  $merchant_id
+     * @param  string  $terminal_id
      * @return PaymentReturn
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -269,10 +266,10 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param string $holder_id
-     * @param string $bank_id
-     *
+     * @param  string  $holder_id
+     * @param  string  $bank_id
      * @return bool
+     *
      * @throws ClientException
      * @throws ConnectionException
      * @throws Exception
@@ -285,9 +282,9 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param P2PCreateDTO $p2p
-     *
+     * @param  P2PCreateDTO  $p2p
      * @return P2PCreate
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -346,9 +343,9 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param string $payment_id
-     *
+     * @param  string  $payment_id
      * @return Confirm
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -378,13 +375,13 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param string $pan
-     * @param string $expiry
-     * @param int $amount
-     * @param string $merchant_id
-     * @param string $terminal_id
-     *
+     * @param  string  $pan
+     * @param  string  $expiry
+     * @param  int  $amount
+     * @param  string  $merchant_id
+     * @param  string  $terminal_id
      * @return Create
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -398,7 +395,7 @@ class Payment extends BaseModel
 
         $ownerData = '';
         if ($amount > $this->max_amount_without_passport) {
-            if (!empty($ownerPassportDTO)) {
+            if (! empty($ownerPassportDTO)) {
                 foreach ($ownerPassportDTO->toArray() as $key => $value) {
                     $ownerData .= "<item>
               <name>{$key}</name>
@@ -465,13 +462,13 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param string $pan
-     * @param string $expiry
-     * @param int $amount
-     * @param string $merchant_id
-     * @param string $terminal_id
-     *
+     * @param  string  $pan
+     * @param  string  $expiry
+     * @param  int  $amount
+     * @param  string  $merchant_id
+     * @param  string  $terminal_id
      * @return Create
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -536,9 +533,9 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param string $terminal_id
-     *
+     * @param  string  $terminal_id
      * @return RecoCreate
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -573,9 +570,9 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param int $payment_id
-     *
+     * @param  int  $payment_id
      * @return RecoConfirm
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
@@ -605,9 +602,9 @@ class Payment extends BaseModel
     }
 
     /**
-     * @param string $payment_id
-     *
+     * @param  string  $payment_id
      * @return BaseResponse
+     *
      * @throws AccessGatewayException
      * @throws ClientException
      * @throws ConnectionException
